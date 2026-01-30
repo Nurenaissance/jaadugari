@@ -666,10 +666,19 @@ img {
 
 .menu-tabs {
   display: flex;
-  justify-content: center;
   gap: 8px;
   margin-bottom: 60px;
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  padding-bottom: 8px;
+  justify-content: flex-start;
+}
+
+.menu-tabs::-webkit-scrollbar {
+  display: none;
 }
 
 .menu-tab {
@@ -678,12 +687,14 @@ img {
   font-weight: 400;
   letter-spacing: 3px;
   text-transform: uppercase;
-  padding: 14px 32px;
+  padding: 14px 24px;
   background: transparent;
   color: var(--color-warm-gray);
   border: 1px solid rgba(201, 168, 76, 0.15);
   cursor: pointer;
   transition: all 0.4s ease;
+  white-space: nowrap;
+  flex-shrink: 0;
 }
 
 .menu-tab:hover,
@@ -1417,67 +1428,6 @@ img {
 }
 
 /* ============================================
-   UPCOMING LOCATION SECTION
-   ============================================ */
-
-.upcoming-section {
-  background: var(--color-charcoal);
-  border-top: 1px solid rgba(201, 168, 76, 0.08);
-}
-
-.upcoming-card {
-  max-width: 600px;
-  margin: 0 auto;
-  text-align: center;
-  padding: 60px 48px;
-  border: 1px solid rgba(201, 168, 76, 0.2);
-  background: rgba(201, 168, 76, 0.03);
-  position: relative;
-}
-
-.upcoming-badge {
-  display: inline-block;
-  font-family: var(--font-body);
-  font-size: 10px;
-  font-weight: 500;
-  letter-spacing: 4px;
-  text-transform: uppercase;
-  color: var(--color-black);
-  background: var(--color-gold);
-  padding: 6px 20px;
-  margin-bottom: 28px;
-}
-
-.upcoming-title {
-  font-family: var(--font-display);
-  font-size: 28px;
-  font-weight: 600;
-  color: var(--color-white);
-  margin-bottom: 16px;
-}
-
-.upcoming-address {
-  font-family: var(--font-body);
-  font-size: 15px;
-  color: var(--color-gold-light);
-  line-height: 1.7;
-}
-
-.upcoming-divider {
-  width: 40px;
-  height: 1px;
-  background: var(--color-gold-dark);
-  margin: 24px auto;
-}
-
-.upcoming-text {
-  font-family: var(--font-accent);
-  font-size: 15px;
-  color: var(--color-warm-gray);
-  line-height: 1.8;
-}
-
-/* ============================================
    ANIMATIONS
    ============================================ */
 
@@ -1624,11 +1574,14 @@ img {
 
   .menu-tabs {
     gap: 6px;
+    justify-content: flex-start;
+    padding: 0 4px 8px;
   }
 
   .menu-tab {
-    padding: 10px 20px;
+    padding: 10px 16px;
     font-size: 10px;
+    letter-spacing: 2px;
   }
 
   .ambiance-gallery {

@@ -68,16 +68,6 @@ const menuData = {
     { name: 'Rogan Josh', desc: 'Kashmir valley lamb, whole spice aromatics, saffron-infused sauce', price: '₹675' },
     { name: 'Pork Vindaloo', desc: 'Classic Goan pork, toddy vinegar, fiery red spice paste', price: '₹575', tag: 'goan special' },
   ],
-  bar: [
-    { name: 'Jaadugari Sunset', desc: 'Feni, passion fruit, lime, kokum syrup, sparkling finish', price: '₹545', tag: 'signature' },
-    { name: 'Morjim Mule', desc: 'Local cashew feni, ginger beer, lime, mint, crushed ice', price: '₹495', tag: 'signature' },
-    { name: 'Spice Route Old Fashioned', desc: 'Bourbon, cardamom, jaggery, Angostura, orange zest', price: '₹595' },
-    { name: 'Coconut Espresso Martini', desc: 'Vodka, fresh espresso, coconut cream, coffee liqueur', price: '₹545' },
-    { name: 'Goan Sangria', desc: 'Red wine, port, feni, tropical fruits, cinnamon, star anise', price: '₹495' },
-    { name: 'Tamarind Margarita', desc: 'Tequila, tamarind, triple sec, chilli-salt rim, lime', price: '₹525' },
-    { name: 'Classic Negroni', desc: 'Gin, Campari, sweet vermouth — stirred, not shaken', price: '₹575' },
-    { name: 'Virgin Kokum Cooler', desc: 'Kokum, mint, lime, soda, jaggery — refreshingly Goan', price: '₹245' },
-  ],
   desserts: [
     { name: 'Bebinca', desc: 'Traditional Goan seven-layer pudding, coconut cream, nutmeg', price: '₹395', tag: 'goan special' },
     { name: 'Gulab Jamun Brulee', desc: 'Rose-scented custard, caramelised sugar, cardamom crumble', price: '₹345', tag: 'signature' },
@@ -86,13 +76,157 @@ const menuData = {
     { name: 'Mango Phirni', desc: 'Alphonso mango, slow-set rice pudding, almond flakes', price: '₹295' },
     { name: 'Mishti Doi Panna Cotta', desc: 'Bengali sweet yoghurt panna cotta, date-palm jaggery', price: '₹345' },
   ],
+  signatureCocktails: [
+    { name: 'Maya Jaal', desc: 'White Rum, Kokum Rose Cordial, Bubbles — Sweet Tart Coastal Magic', price: '₹550', tag: 'signature' },
+    { name: 'Neel Apsara', desc: 'Gin, Honey, Lemongrass, Blue Pea Flower — Colour Changing Enchantment', price: '₹650', tag: 'signature' },
+    { name: 'Banjaran Breeze', desc: 'Vodka, Watermelon, Roasted Cumin & Lime — Rustic Yet Refreshing', price: '₹700' },
+    { name: 'Jaadugari Picante', desc: 'Smoked Chili Oil, Mint & Coriander Cordial, Red Chili & Orange — Bold and Fiery', price: '₹750', tag: 'signature' },
+    { name: "Jadugar's Old Book", desc: 'Bourbon, Jaggery, Bitters — Deep, Warm & Vintage', price: '₹700' },
+    { name: 'Coconut Conjuring', desc: 'White Rum, Coconut Water, Kaffir Lime — Tropical Spell', price: '₹520' },
+    { name: 'Mirage Martini', desc: 'Vodka, Aloe Vera, Green Apple Vermouth — Clean and Crisp', price: '₹520' },
+    { name: 'Orange Smoke', desc: 'Orange Vodka, Honey Cordial, Smoke — Luxurious and Dramatic', price: '₹650' },
+    { name: 'Tulsi', desc: 'Gin, Tulsi, Chamomile — Herbal Refreshment', price: '₹700' },
+  ],
+  classicCocktails: [
+    { name: 'Old Fashioned', desc: '60ml — The timeless bourbon classic', price: '₹520' },
+    { name: 'Negroni', desc: '60ml — Gin, Campari, sweet vermouth', price: '₹540' },
+    { name: 'Mojito', desc: '60ml — White rum, mint, lime, soda', price: '₹420' },
+    { name: 'Daiquiri', desc: '60ml — Rum, lime, sugar — tropical perfection', price: '₹440' },
+    { name: 'Cosmopolitan', desc: '60ml — Vodka, cranberry, triple sec, lime', price: '₹460' },
+    { name: 'Bloody Mary', desc: '60ml — Vodka, tomato juice, spices', price: '₹460' },
+    { name: 'Whiskey Sour', desc: '60ml — Whiskey, lemon, sugar, egg white', price: '₹480' },
+    { name: 'Martini (Gin / Vodka)', desc: '60ml — Dry vermouth, stirred or shaken', price: '₹500' },
+    { name: 'Espresso Martini', desc: '60ml — Vodka/Whiskey, espresso, coffee liqueur', price: '₹600' },
+    { name: 'Margarita', desc: '60ml — Tequila, lime, triple sec', price: '₹650' },
+    { name: 'Long Island Iced Tea', desc: '60ml — Vodka, rum, gin, tequila, triple sec', price: '₹750' },
+  ],
+  mocktails: [
+    { name: 'Virgin Mojito', desc: 'Mint, lime & soda — classic refresher', price: '₹200' },
+    { name: 'Kokum Cooler', desc: 'Kokum, mint & soda — tangy and refreshing', price: '₹220' },
+    { name: 'Coconut Lime Cooler', desc: 'Tender coconut & lime — tropical chill', price: '₹220' },
+    { name: 'Watermelon Basil Smash', desc: 'Fresh watermelon, basil & lime', price: '₹230' },
+    { name: 'Apple Cucumber Spritz', desc: 'Light, fresh and hydrating', price: '₹230' },
+  ],
+  whiskey: [
+    { name: 'Blenders Pride', desc: '30ml', price: '₹150' },
+    { name: 'Black Dog', desc: '30ml', price: '₹200' },
+    { name: 'Jameson', desc: '30ml', price: '₹240' },
+    { name: "Ballantine's", desc: '30ml', price: '₹250' },
+    { name: 'JW Red Label', desc: '30ml', price: '₹300' },
+    { name: 'JW Black Label', desc: '30ml', price: '₹400' },
+    { name: 'Amrut Single Malt', desc: '30ml — Indian single malt', price: '₹480' },
+    { name: 'Glenlivet 12', desc: '30ml — Smooth and fruity', price: '₹540' },
+    { name: 'Glenfiddich 12', desc: '30ml — Classic single malt', price: '₹550' },
+  ],
+  scotch: [
+    { name: "Dewar's 12 White Label", desc: 'Balanced, silky and refined', price: '₹300' },
+    { name: 'Monkey Shoulder', desc: 'Smooth blended malt', price: '₹400' },
+    { name: "Maker's Mark", desc: 'Soft, wheated bourbon with vanilla notes', price: '₹480', tag: 'premium' },
+    { name: 'Jameson Black Barrel', desc: 'Toasted oak richness with vanilla sweetness', price: '₹520', tag: 'premium' },
+    { name: 'Woodford Reserve', desc: 'Bourbon — full-bodied with caramel and spice', price: '₹520', tag: 'premium' },
+    { name: 'Bushmills 10 YO', desc: 'Single Malt — light, fruity and smooth', price: '₹560', tag: 'premium' },
+    { name: 'Glenmorangie Original 10 YO', desc: 'Floral, honeyed and elegant', price: '₹620', tag: 'premium' },
+    { name: 'JW Gold Label Reserve', desc: 'Smooth, honeyed and celebratory', price: '₹620' },
+    { name: 'Chivas Regal 18 YO', desc: 'Rich layers of dried fruit and spice', price: '₹680', tag: 'premium' },
+    { name: 'Talisker Storm', desc: 'Maritime smoke and peppery finish', price: '₹720', tag: 'premium' },
+    { name: 'Oban 14 YO', desc: 'Coastal, balanced and refined', price: '₹780', tag: 'premium' },
+    { name: 'The Macallan 12 YO', desc: 'Rich sherry notes, smooth and luxurious', price: '₹820', tag: 'premium' },
+    { name: 'Lagavulin 16 YO', desc: 'Bold peat smoke with deep complexity', price: '₹950', tag: 'premium' },
+    { name: "Yamazaki Distiller's Reserve", desc: 'Japanese — elegant, fruity and complex', price: '₹980', tag: 'ultra premium' },
+    { name: 'Hibiki Japanese Harmony', desc: 'Japanese — smooth, floral and perfectly balanced', price: '₹1,050', tag: 'ultra premium' },
+  ],
+  vodka: [
+    { name: 'Magic Moments', desc: '30ml', price: '₹150' },
+    { name: 'Smirnoff', desc: '30ml — Clean and classic', price: '₹180' },
+    { name: 'Absolut', desc: '30ml — Swedish smoothness', price: '₹220' },
+    { name: 'Ketel One', desc: '30ml — Crisp and refined', price: '₹300' },
+    { name: 'Ciroc', desc: '30ml — Grape-based luxury', price: '₹380', tag: 'premium' },
+    { name: 'Grey Goose', desc: '30ml — French ultra-premium', price: '₹420', tag: 'premium' },
+  ],
+  gin: [
+    { name: 'Beefeater', desc: 'Traditional London Dry, crisp and clean', price: '₹260' },
+    { name: 'Bombay Sapphire', desc: 'Light, aromatic and versatile', price: '₹280' },
+    { name: 'Tanqueray London Dry', desc: 'Bold juniper backbone, classic G&T favourite', price: '₹300' },
+    { name: 'Greater Than', desc: 'Indian — Classic London Dry style, clean & balanced', price: '₹320' },
+    { name: 'Terai Gin', desc: 'Indian craft — fresh citrus-led, very smooth', price: '₹340' },
+    { name: 'Nilgiris Indian Dry Gin', desc: 'Herbal, floral, South Indian botanicals', price: '₹350' },
+    { name: 'Stranger & Sons', desc: "Goa's pride — juniper-forward with Indian botanicals", price: '₹360', tag: 'must try' },
+    { name: 'Jaisalmer Indian Craft Gin', desc: 'Royal Indian botanicals, coriander & vetiver', price: '₹380' },
+    { name: "Hendrick's Gin", desc: 'Rose & cucumber infused — elegant and floral', price: '₹420', tag: 'premium' },
+    { name: 'Hapusa Himalayan Gin', desc: 'Wild Himalayan juniper, earthy and bold', price: '₹420', tag: 'premium' },
+  ],
+  tequilaRum: [
+    { name: 'Old Monk', desc: 'Rum — The Indian classic', price: '₹150' },
+    { name: 'Bacardi White', desc: 'Rum — Clean and mixable', price: '₹180' },
+    { name: 'Captain Morgan Dark', desc: 'Rum — Rich and spiced', price: '₹200' },
+    { name: 'Villa Vercelli', desc: 'Tequila', price: '₹250' },
+    { name: 'Malibu', desc: 'Rum — Coconut-flavoured', price: '₹260' },
+    { name: 'Sierra Silver', desc: 'Tequila', price: '₹260' },
+    { name: 'Sauza Gold', desc: 'Tequila', price: '₹300' },
+    { name: 'Olmeca Blanco', desc: 'Tequila', price: '₹320' },
+    { name: 'Olmeca Gold', desc: 'Tequila', price: '₹340' },
+    { name: 'Camino Blanco', desc: 'Tequila', price: '₹450' },
+    { name: '1800 Blanco', desc: 'Tequila — Premium', price: '₹460', tag: 'premium' },
+    { name: 'Don Julio Blanco', desc: 'Tequila — Premium', price: '₹520', tag: 'premium' },
+    { name: 'Patrón Silver', desc: 'Tequila — Premium', price: '₹580', tag: 'premium' },
+  ],
+  liqueurs: [
+    { name: 'Triple Sec', desc: 'Orange liqueur — essential for cocktails', price: '₹200' },
+    { name: 'Kahlúa', desc: 'Coffee liqueur — rich and sweet', price: '₹240' },
+    { name: 'Aperol', desc: 'Italian aperitif — bitter-sweet orange', price: '₹240' },
+    { name: 'Baileys', desc: 'Irish cream — smooth and indulgent', price: '₹260' },
+    { name: 'Campari', desc: 'Italian bitter — classic Negroni base', price: '₹260' },
+    { name: 'Southern Comfort', desc: 'Peach-flavoured whiskey liqueur', price: '₹260' },
+    { name: 'Jägermeister', desc: 'Herbal German liqueur — 56 botanicals', price: '₹280' },
+    { name: 'Sambuca', desc: 'Italian anise-flavoured liqueur', price: '₹280' },
+    { name: 'Cointreau', desc: 'Premium French orange liqueur', price: '₹320' },
+  ],
+  beer: [
+    { name: 'Kingfisher Premium', desc: 'Bucket 7 pints ₹1,000', price: '₹180' },
+    { name: 'Kingfisher Strong', desc: 'Indian classic strong beer', price: '₹190' },
+    { name: 'Peoples', desc: 'Smooth and easy-drinking', price: '₹200' },
+    { name: 'Kingfisher Ultra', desc: 'Bucket 7 pints ₹1,200', price: '₹220' },
+    { name: 'Bira 91 Boom Strong', desc: 'Indian craft strong', price: '₹230' },
+    { name: 'Tuborg Green', desc: 'Light European lager', price: '₹230' },
+    { name: 'Bira 91 Blonde', desc: 'Indian craft lager', price: '₹240' },
+    { name: 'Budweiser', desc: 'American classic', price: '₹240' },
+    { name: 'Bira 91 White', desc: 'Indian craft wheat ale', price: '₹260' },
+    { name: 'Budweiser Magnum', desc: 'Premium strong', price: '₹260' },
+    { name: 'Peoples Beer', desc: 'Goa — Local Craft', price: '₹280', tag: 'goan special' },
+    { name: 'Heineken', desc: 'Imported — Dutch premium', price: '₹320', tag: 'imported' },
+    { name: 'Corona', desc: 'Imported — Mexican classic', price: '₹360', tag: 'imported' },
+    { name: 'Hoegaarden', desc: 'Imported — Belgian wheat', price: '₹380', tag: 'imported' },
+  ],
+  shots: [
+    { name: 'Jamun Shot', desc: 'Indian berry-flavoured shot', price: '₹220' },
+    { name: 'Coconut Rum Shot', desc: 'Tropical coconut rum', price: '₹220' },
+    { name: 'Lemon Drop', desc: 'Sweet and citrusy', price: '₹240' },
+    { name: 'Mango Masala Shot', desc: 'Spiced mango flavour', price: '₹240' },
+    { name: 'Chilli Tequila', desc: 'Fiery tequila kick', price: '₹240' },
+    { name: 'Tequila Slammer', desc: 'Tequila and soda — fast and fun', price: '₹260' },
+    { name: 'Coffee Kick', desc: 'Espresso-powered shot', price: '₹260' },
+    { name: 'Kamikaze', desc: 'Vodka, triple sec, lime', price: '₹280' },
+    { name: 'Jadugari Surprise Shot', desc: 'Spicy, Tangy — house special', price: '₹300', tag: 'signature' },
+    { name: 'B52', desc: 'Kahlúa, Baileys, Grand Marnier — layered', price: '₹320' },
+    { name: 'Jäger Bomb', desc: 'Jägermeister and energy drink', price: '₹350' },
+  ],
 }
 
 const categories = [
   { key: 'starters', label: 'Starters' },
   { key: 'mains', label: 'Mains' },
-  { key: 'bar', label: 'Bar & Cocktails' },
   { key: 'desserts', label: 'Desserts' },
+  { key: 'signatureCocktails', label: 'Signature Cocktails' },
+  { key: 'classicCocktails', label: 'Classic Cocktails' },
+  { key: 'mocktails', label: 'Mocktails' },
+  { key: 'whiskey', label: 'Whiskey' },
+  { key: 'scotch', label: 'Scotch & Premium' },
+  { key: 'vodka', label: 'Vodka' },
+  { key: 'gin', label: 'Gin' },
+  { key: 'tequilaRum', label: 'Tequila & Rum' },
+  { key: 'liqueurs', label: 'Liqueurs' },
+  { key: 'beer', label: 'Beer' },
+  { key: 'shots', label: 'Shots' },
 ]
 
 // ============================================
@@ -645,7 +779,7 @@ function App() {
 
           <div className="menu-note fade-in">
             <p className="menu-note-text">
-              All prices inclusive of taxes. Please inform your server of any dietary requirements or allergies.
+              VAT/GST extra as applicable. A 10% service charge is added for our hardworking team and can be removed upon request. Please inform your server of any dietary requirements or allergies. Please drink responsibly.
             </p>
           </div>
         </div>
@@ -810,38 +944,6 @@ function App() {
                 12:00 PM — 12:00 AM
               </p>
             </div>
-          </div>
-        </div>
-      </section>
-
-      {/* ========== UPCOMING LOCATION ========== */}
-      <section className="section upcoming-section">
-        <div className="container">
-          <div className="section-header fade-in">
-            <span className="section-label">Coming Soon</span>
-            <h2 className="section-title">Our Next Chapter</h2>
-            <p className="section-subtitle">
-              The magic of Jaadugari is expanding. A brand new outpost is on its way.
-            </p>
-            <div className="section-ornament">
-              <span className="section-ornament-line"></span>
-              <span className="section-ornament-diamond"></span>
-              <span className="section-ornament-line"></span>
-            </div>
-          </div>
-
-          <div className="upcoming-card fade-in">
-            <div className="upcoming-badge">Upcoming</div>
-            <h3 className="upcoming-title">Jaadugari &mdash; Kings Central</h3>
-            <p className="upcoming-address">
-              Kings Central, NH1<br />
-              Main GT Road, Goa
-            </p>
-            <div className="upcoming-divider"></div>
-            <p className="upcoming-text">
-              Our second location brings the same enchanting dining experience
-              to the bustling GT Road corridor. Stay tuned for the grand opening.
-            </p>
           </div>
         </div>
       </section>
