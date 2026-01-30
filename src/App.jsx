@@ -564,10 +564,6 @@ function App() {
             <span className="hero-title-accent">Indian Resto & Bar</span>
           </h1>
 
-          <div className="hero-badge">
-            <span className="hero-badge-text">Opening Soon</span>
-          </div>
-
           <p className="hero-description">
             A new chapter of Indian culinary magic is about to unfold.
             Premium dining, handcrafted cocktails, and an ambiance
