@@ -1,4 +1,46 @@
-import { useState, useEffect, useRef } from 'react'
+import { useState, useEffect } from 'react'
+
+// ============================================
+// GOOGLE DRIVE IMAGE HELPERS
+// ============================================
+
+const driveImg = (id) =>
+  `https://lh3.googleusercontent.com/d/${id}`
+
+// Image assignments (from Google Drive folder)
+const IMAGES = {
+  hero: '1Bp1hjpJv32ZK0JLd2pCD47p1pCQhydcN',           // 1.jpg
+  about: '11aYO0t_doI_HbcqGwOPriE7Ttgd7cma6',          // 2.jpg
+  gallery1: '1vhtNceLPr3hjeo8FuA5lB8LNvhj8dxWL',       // 3.jpg
+  gallery2: '1yCv5uDlWAmlHCaOXzWjlNx41Sgcogm3f',       // 4.jpg
+  gallery3: '18eFHTr340l0xz_-dVXy89eJpVAB1p0MB',        // 5.jpg
+  gallery4: '1llkurSxm3u51Px4Ur0-byxpdm8GP8-Ch',        // 6.jpg
+  gallery5: '1KucxtpD4AUvQ5DPcP-sRb9pqYT3Mh9Vo',       // 7.jpg
+  gallery6: '1tJ6UKiEjxx8epbb4pqCQOYn6AHOf5hxn',        // 8.jpg
+  ambiance1: '1_b8L1PlUJTO8gHmx-YpvDj_5Be7o6PnK',      // 9.jpg
+  ambiance2: '1O3Xu0ZLE8onHB5ys7xS5WBDWE361FWuh',       // 10.jpg
+  ambiance3: '1JudrGNor9opKHBEv69DTyKEFY0QM5rY4',       // 10.jpg (2nd)
+  food1: '1QgITa4CFO_cPsxNfLZ2lkA5iiJy4-3aV',          // 11.jpg
+  food2: '1pRLRDJ5F9aSdUUmYDOb1sSrJaLysxMZM',          // 12.jpg
+  food3: '17tUqZfyvMKqjMbaSKfhnVaaoeEPlzmmS',           // 13.jpg
+  food4: '1h8bZ_DjBtiOXK3syoEpmyRBwrkmjs_Rp',           // 14.jpg
+  interior1: '11VzXMIRCrMtHvJsw-9dTv6e8tkNK3t7W',       // 15.jpg
+  interior2: '1pnTJA8BTjr_KlTJReHKDIqX285fJNWss',       // 16.jpg
+  bar1: '1WUNpc3C4uvrXqotd2PPF6wfASRx506KP',            // 17.jpg
+  bar2: '1g2iWxbS5nVgGc43sdr-Eg1LaoTg0_5WZ',            // 18.jpg
+  detail1: '1xoAmik93CGQBn1Dcr_kdm8gz4WcCzm1Q',         // 19.jpg
+  detail2: '1u225Nxt7GYnxndSrx0souFv0XVvhmR3d',          // 20.jpg
+  detail3: '10n1cliV-NfMi-0A61FGOW3bBuczTySwZ',          // 21.jpg
+  detail4: '1BCquoC1VIUJPJ8NHHLJs9lR147dNCyt0',          // 22.jpg
+  detail5: '1-mOpIxqwue8vN5w3_jTRtDcW8kRlqguI',         // 23.jpg
+  detail6: '1dqtwmo5BANoeDs1nY05ZwnQnuFUW8p9p',          // 24.jpg
+}
+
+const VIDEO = {
+  cocktail: '1br9vizFkr9yAxbWsBH1eFQIY4FQNv1hv',
+  collage: '1QR1_X7-oNONVqYRVfm9LefdgzPhPb7Qi',
+  jaadugari: '17wnq15FzOYuRMdp8NFWdPrmgm69c56Kj',
+}
 
 // ============================================
 // MENU DATA
@@ -7,7 +49,7 @@ import { useState, useEffect, useRef } from 'react'
 const menuData = {
   starters: [
     { name: 'Patte Ki Chaat', desc: 'Crispy spinach leaves, tangy tamarind, yoghurt mousse, pomegranate', price: '₹395', tag: 'signature' },
-    { name: 'Bharwan Gucchi', desc: 'Wild Himalayan morels stuffed with paneer khurchan, saffron cream', price: '₹695', tag: 'chef\'s pick' },
+    { name: 'Bharwan Gucchi', desc: 'Wild Himalayan morels stuffed with paneer khurchan, saffron cream', price: '₹695', tag: "chef's pick" },
     { name: 'Mutton Ghee Roast', desc: 'Slow-roasted Mangalorean-style lamb, curry leaf tempering, coconut', price: '₹595' },
     { name: 'Prawn Koliwada', desc: 'Goan rock prawns, semolina crust, green chutney, lemon zest', price: '₹545' },
     { name: 'Amritsari Fish Tikka', desc: 'Fresh catch marinated in carom & chaat masala, tandoor-kissed', price: '₹495' },
@@ -37,7 +79,7 @@ const menuData = {
   ],
   desserts: [
     { name: 'Bebinca', desc: 'Traditional Goan seven-layer pudding, coconut cream, nutmeg', price: '₹395', tag: 'goan special' },
-    { name: 'Gulab Jamun Brûlée', desc: 'Rose-scented custard, caramelised sugar, cardamom crumble', price: '₹345', tag: 'signature' },
+    { name: 'Gulab Jamun Brulee', desc: 'Rose-scented custard, caramelised sugar, cardamom crumble', price: '₹345', tag: 'signature' },
     { name: 'Saffron Kulfi', desc: 'Hand-churned Lucknowi kulfi, pistachio praline, rose petal', price: '₹295' },
     { name: 'Chocolate Fondant', desc: 'Molten dark chocolate, salted caramel, vanilla bean gelato', price: '₹445' },
     { name: 'Mango Phirni', desc: 'Alphonso mango, slow-set rice pudding, almond flakes', price: '₹295' },
@@ -60,6 +102,7 @@ function App() {
   const [scrolled, setScrolled] = useState(false)
   const [menuOpen, setMenuOpen] = useState(false)
   const [activeCategory, setActiveCategory] = useState('starters')
+  const [lightbox, setLightbox] = useState(null)
 
   useEffect(() => {
     const handleScroll = () => {
@@ -69,7 +112,6 @@ function App() {
     return () => window.removeEventListener('scroll', handleScroll)
   }, [])
 
-  // Intersection Observer for fade-in animations
   useEffect(() => {
     const observer = new IntersectionObserver(
       (entries) => {
@@ -81,7 +123,6 @@ function App() {
       },
       { threshold: 0.1, rootMargin: '0px 0px -50px 0px' }
     )
-
     document.querySelectorAll('.fade-in').forEach((el) => observer.observe(el))
     return () => observer.disconnect()
   }, [activeCategory])
@@ -91,13 +132,42 @@ function App() {
     document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' })
   }
 
+  // Gallery images for the photo grid
+  const galleryImages = [
+    { id: IMAGES.gallery1, label: 'Ambiance' },
+    { id: IMAGES.food1, label: 'Cuisine' },
+    { id: IMAGES.gallery2, label: 'Interior' },
+    { id: IMAGES.food2, label: 'Signature Dish' },
+    { id: IMAGES.bar1, label: 'The Bar' },
+    { id: IMAGES.food3, label: 'Plated Perfection' },
+    { id: IMAGES.interior1, label: 'Dining Space' },
+    { id: IMAGES.gallery3, label: 'Details' },
+    { id: IMAGES.food4, label: 'Fresh Flavours' },
+    { id: IMAGES.detail1, label: 'Artistry' },
+    { id: IMAGES.gallery4, label: 'Setting' },
+    { id: IMAGES.bar2, label: 'Cocktails' },
+  ]
+
   return (
     <>
+      {/* ========== LIGHTBOX ========== */}
+      {lightbox !== null && (
+        <div className="lightbox" onClick={() => setLightbox(null)}>
+          <button className="lightbox-close" onClick={() => setLightbox(null)}>&times;</button>
+          <img
+            src={driveImg(lightbox)}
+            alt="Gallery"
+            className="lightbox-img"
+            onClick={(e) => e.stopPropagation()}
+          />
+        </div>
+      )}
+
       {/* ========== NAVIGATION ========== */}
       <nav className={`navbar ${scrolled ? 'scrolled' : ''}`}>
         <div className="nav-logo">
           <span className="nav-logo-text">Jaadugari</span>
-          <span className="nav-logo-tagline">Indian Restro & Bar</span>
+          <span className="nav-logo-tagline">Resto & Bar</span>
         </div>
 
         <button
@@ -112,14 +182,11 @@ function App() {
 
         <ul className={`nav-links ${menuOpen ? 'open' : ''}`}>
           <li><a href="#about" onClick={() => scrollToSection('about')}>Our Story</a></li>
+          <li><a href="#gallery" onClick={() => scrollToSection('gallery')}>Gallery</a></li>
           <li><a href="#menu" onClick={() => scrollToSection('menu')}>Menu</a></li>
-          <li><a href="#ambiance" onClick={() => scrollToSection('ambiance')}>Experience</a></li>
           <li><a href="#contact" onClick={() => scrollToSection('contact')}>Contact</a></li>
           <li>
-            <a
-              href="tel:+919876543210"
-              className="nav-reserve-btn"
-            >
+            <a href="tel:+919876543210" className="nav-reserve-btn">
               Reserve a Table
             </a>
           </li>
@@ -128,21 +195,39 @@ function App() {
 
       {/* ========== HERO ========== */}
       <section className="hero">
-        <div className="hero-bg"></div>
+        <div className="hero-bg" style={{
+          backgroundImage: `
+            linear-gradient(180deg,
+              rgba(10,10,10,0.45) 0%,
+              rgba(10,10,10,0.2) 30%,
+              rgba(10,10,10,0.3) 60%,
+              rgba(10,10,10,0.92) 100%
+            ),
+            url(${driveImg(IMAGES.hero)})
+          `,
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+        }}></div>
         <div className="hero-pattern"></div>
 
         <div className="hero-content">
           <div className="hero-ornament"></div>
-          <p className="hero-subtitle-top">Morjim, North Goa</p>
+          <p className="hero-subtitle-top">Kings Central NH1 &middot; Main GT Road &middot; Goa</p>
           <h1 className="hero-title">
             Jaadugari
-            <span className="hero-title-accent">Where Magic Meets Flavour</span>
+            <span className="hero-title-accent">Resto & Bar</span>
           </h1>
+
+          <div className="hero-badge">
+            <span className="hero-badge-text">Opening Soon</span>
+          </div>
+
           <p className="hero-description">
-            An enchanting journey through India's finest culinary traditions,
-            set against the golden shores of Morjim. Premium dining, handcrafted
-            cocktails, and an ambiance that casts its spell.
+            A new chapter of Indian culinary magic is about to unfold.
+            Premium dining, handcrafted cocktails, and an ambiance
+            that casts its spell — coming to Kings Central, NH1.
           </p>
+
           <div className="hero-divider">
             <span className="hero-divider-line"></span>
             <span className="hero-divider-dot"></span>
@@ -152,8 +237,8 @@ function App() {
             <a href="#menu" className="btn-primary" onClick={(e) => { e.preventDefault(); scrollToSection('menu') }}>
               Explore Menu
             </a>
-            <a href="tel:+919876543210" className="btn-secondary">
-              Reserve a Table
+            <a href="#contact" className="btn-secondary" onClick={(e) => { e.preventDefault(); scrollToSection('contact') }}>
+              Get in Touch
             </a>
           </div>
         </div>
@@ -169,11 +254,11 @@ function App() {
         <div className="container">
           <div className="about-grid">
             <div className="about-image-wrapper fade-in">
-              <div className="about-image">
-                <div className="about-image-inner">
-                  <div className="about-image-icon">&#10024;</div>
-                  <div className="about-image-text">The Art of Indian Cuisine</div>
-                </div>
+              <div className="about-image" style={{
+                backgroundImage: `url(${driveImg(IMAGES.about)})`,
+                backgroundSize: 'cover',
+                backgroundPosition: 'center',
+              }}>
               </div>
               <div className="about-image-frame"></div>
             </div>
@@ -185,9 +270,9 @@ function App() {
               </h2>
               <p className="about-text">
                 Jaadugari — meaning "enchantress" — is born from a deep love for India's
-                diverse culinary heritage and the magical spirit of Goa. Nestled in the
-                serene village of Morjim, we bring you an extraordinary dining experience
-                where every dish tells a story.
+                diverse culinary heritage and the magical spirit of Goa. Located at the
+                prestigious Kings Central on NH1, we bring you an extraordinary dining
+                experience where every dish tells a story.
               </p>
               <p className="about-text">
                 Our kitchen celebrates regional treasures from Rajasthan's fiery Laal Maas
@@ -219,6 +304,30 @@ function App() {
         </div>
       </section>
 
+      {/* ========== VIDEO SECTION ========== */}
+      <section className="video-section">
+        <div className="container">
+          <div className="section-header fade-in">
+            <span className="section-label">A Glimpse</span>
+            <h2 className="section-title">Experience Jaadugari</h2>
+            <div className="section-ornament">
+              <span className="section-ornament-line"></span>
+              <span className="section-ornament-diamond"></span>
+              <span className="section-ornament-line"></span>
+            </div>
+          </div>
+          <div className="video-wrapper fade-in">
+            <iframe
+              src={`https://drive.google.com/file/d/${VIDEO.jaadugari}/preview`}
+              allow="autoplay"
+              allowFullScreen
+              title="Jaadugari Experience"
+              className="video-frame"
+            ></iframe>
+          </div>
+        </div>
+      </section>
+
       {/* ========== EXPERIENCE STRIP ========== */}
       <section className="experience-strip">
         <div className="container">
@@ -236,10 +345,47 @@ function App() {
               <div className="experience-label">Days a Week</div>
             </div>
             <div className="experience-item fade-in">
-              <div className="experience-number">4.8</div>
-              <div className="experience-label">Guest Rating</div>
+              <div className="experience-number">NH1</div>
+              <div className="experience-label">Kings Central</div>
             </div>
           </div>
+        </div>
+      </section>
+
+      {/* ========== PHOTO GALLERY ========== */}
+      <section id="gallery" className="section gallery-section">
+        <div className="container">
+          <div className="section-header fade-in">
+            <span className="section-label">Visual Journey</span>
+            <h2 className="section-title">A Feast for the Eyes</h2>
+            <p className="section-subtitle">
+              From our kitchen to your table — every detail is a work of art.
+            </p>
+            <div className="section-ornament">
+              <span className="section-ornament-line"></span>
+              <span className="section-ornament-diamond"></span>
+              <span className="section-ornament-line"></span>
+            </div>
+          </div>
+        </div>
+
+        <div className="photo-grid">
+          {galleryImages.map((img, i) => (
+            <div
+              key={i}
+              className={`photo-grid-item ${i === 0 || i === 5 ? 'photo-grid-item--large' : ''} fade-in`}
+              onClick={() => setLightbox(img.id)}
+            >
+              <img
+                src={driveImg(img.id)}
+                alt={img.label}
+                loading="lazy"
+              />
+              <div className="photo-grid-overlay">
+                <span className="photo-grid-label">{img.label}</span>
+              </div>
+            </div>
+          ))}
         </div>
       </section>
 
@@ -312,58 +458,86 @@ function App() {
         </div>
 
         <div className="ambiance-gallery">
-          <div className="ambiance-card fade-in">
-            <div className="ambiance-card-inner">
-              <div>
-                <div className="ambiance-card-icon">&#127860;</div>
-                <h3 className="ambiance-card-title">Fine Dining</h3>
-                <p className="ambiance-card-text">
-                  Elegant indoor seating with warm ambient lighting,
-                  curated music, and impeccable service.
-                </p>
-              </div>
+          <div className="ambiance-card fade-in" style={{
+            backgroundImage: `linear-gradient(to top, rgba(10,10,10,0.85) 0%, rgba(10,10,10,0.2) 50%), url(${driveImg(IMAGES.ambiance1)})`,
+            backgroundSize: 'cover', backgroundPosition: 'center'
+          }}>
+            <div className="ambiance-card-content">
+              <h3 className="ambiance-card-title">Fine Dining</h3>
+              <p className="ambiance-card-text">
+                Elegant indoor seating with warm ambient lighting,
+                curated music, and impeccable service.
+              </p>
             </div>
-            <div className="ambiance-card-overlay"></div>
           </div>
 
-          <div className="ambiance-card fade-in">
-            <div className="ambiance-card-inner">
-              <div>
-                <div className="ambiance-card-icon">&#127774;</div>
-                <h3 className="ambiance-card-title">Sunset Terrace</h3>
-                <p className="ambiance-card-text">
-                  Alfresco dining under the Goan sky. Watch the sun dip
-                  into the Arabian Sea with a cocktail in hand.
-                </p>
-              </div>
+          <div className="ambiance-card fade-in" style={{
+            backgroundImage: `linear-gradient(to top, rgba(10,10,10,0.85) 0%, rgba(10,10,10,0.2) 50%), url(${driveImg(IMAGES.ambiance2)})`,
+            backgroundSize: 'cover', backgroundPosition: 'center'
+          }}>
+            <div className="ambiance-card-content">
+              <h3 className="ambiance-card-title">The Terrace</h3>
+              <p className="ambiance-card-text">
+                Alfresco dining under the Goan sky with a
+                cocktail in hand and the breeze on your skin.
+              </p>
             </div>
-            <div className="ambiance-card-overlay"></div>
           </div>
 
-          <div className="ambiance-card fade-in">
-            <div className="ambiance-card-inner">
-              <div>
-                <div className="ambiance-card-icon">&#127867;</div>
-                <h3 className="ambiance-card-title">The Bar</h3>
-                <p className="ambiance-card-text">
-                  Handcrafted cocktails, premium spirits, and local feni
-                  creations in an intimate lounge setting.
-                </p>
-              </div>
+          <div className="ambiance-card fade-in" style={{
+            backgroundImage: `linear-gradient(to top, rgba(10,10,10,0.85) 0%, rgba(10,10,10,0.2) 50%), url(${driveImg(IMAGES.ambiance3)})`,
+            backgroundSize: 'cover', backgroundPosition: 'center'
+          }}>
+            <div className="ambiance-card-content">
+              <h3 className="ambiance-card-title">The Bar</h3>
+              <p className="ambiance-card-text">
+                Handcrafted cocktails, premium spirits, and local feni
+                creations in an intimate lounge setting.
+              </p>
             </div>
-            <div className="ambiance-card-overlay"></div>
+          </div>
+        </div>
+      </section>
+
+      {/* ========== COCKTAIL VIDEO ========== */}
+      <section className="video-section video-section--alt">
+        <div className="container">
+          <div className="video-split fade-in">
+            <div className="video-split-content">
+              <span className="section-label">Crafted Cocktails</span>
+              <h2 className="section-title" style={{ textAlign: 'left', fontSize: 'clamp(28px, 4vw, 44px)' }}>
+                The Art of<br />the Pour
+              </h2>
+              <p className="about-text">
+                Our mixologists craft each cocktail with precision and passion.
+                From signature feni-based creations to reimagined classics,
+                every glass is an experience in itself.
+              </p>
+            </div>
+            <div className="video-split-frame">
+              <iframe
+                src={`https://drive.google.com/file/d/${VIDEO.cocktail}/preview`}
+                allow="autoplay"
+                allowFullScreen
+                title="Cocktail Crafting"
+                className="video-frame"
+              ></iframe>
+            </div>
           </div>
         </div>
       </section>
 
       {/* ========== QUOTE ========== */}
-      <section className="quote-section">
+      <section className="quote-section" style={{
+        backgroundImage: `linear-gradient(rgba(10,10,10,0.88), rgba(10,10,10,0.88)), url(${driveImg(IMAGES.detail3)})`,
+        backgroundSize: 'cover', backgroundPosition: 'center', backgroundAttachment: 'fixed'
+      }}>
         <div className="container">
           <p className="quote-text fade-in">
             "Jaadugari is not just a restaurant — it is an experience.
             The flavours, the ambiance, the warmth — pure magic."
           </p>
-          <p className="quote-author fade-in">A Beloved Guest</p>
+          <p className="quote-author fade-in">Coming Soon to Kings Central, NH1</p>
         </div>
       </section>
 
@@ -374,8 +548,8 @@ function App() {
             <span className="section-label">Find Us</span>
             <h2 className="section-title">Visit Jaadugari</h2>
             <p className="section-subtitle">
-              We look forward to welcoming you. Reserve your table
-              or simply walk in — the magic awaits.
+              We look forward to welcoming you. The magic awaits
+              at Kings Central on Main GT Road, NH1.
             </p>
             <div className="section-ornament">
               <span className="section-ornament-line"></span>
@@ -389,10 +563,10 @@ function App() {
               <div className="contact-card-icon">&#128205;</div>
               <h3 className="contact-card-title">Location</h3>
               <p className="contact-card-text">
-                Jaadugari Indian Restro & Bar<br />
-                Morjim Beach Road,<br />
-                Morjim, Pernem,<br />
-                North Goa, Goa 403512
+                Jaadugari Resto & Bar<br />
+                Kings Central, NH1<br />
+                Main GT Road<br />
+                Goa
               </p>
             </div>
 
@@ -412,39 +586,12 @@ function App() {
               <div className="contact-card-icon">&#128337;</div>
               <h3 className="contact-card-title">Hours</h3>
               <p className="contact-card-text">
-                <strong>Lunch</strong><br />
-                12:00 PM — 3:30 PM<br /><br />
-                <strong>Dinner</strong><br />
-                7:00 PM — 11:30 PM<br /><br />
-                <strong>Bar</strong><br />
-                12:00 PM — 12:00 AM
+                <strong>Opening Soon</strong><br /><br />
+                <strong>Expected Hours:</strong><br />
+                Lunch: 12:00 PM — 3:30 PM<br />
+                Dinner: 7:00 PM — 11:30 PM<br />
+                Bar: 12:00 PM — 12:00 AM
               </p>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* ========== HOURS HIGHLIGHT ========== */}
-      <section className="hours-section">
-        <div className="container">
-          <div className="hours-content fade-in">
-            <span className="section-label">Open Every Day</span>
-            <h2 className="section-title" style={{ fontSize: 'clamp(28px, 4vw, 40px)', marginBottom: 0 }}>
-              Seven Days of Enchantment
-            </h2>
-            <div className="hours-grid">
-              <div className="hours-item">
-                <div className="hours-day">Mon — Thu</div>
-                <div className="hours-time">12 PM — 11:30 PM</div>
-              </div>
-              <div className="hours-item">
-                <div className="hours-day">Fri — Sat</div>
-                <div className="hours-time">12 PM — 12:00 AM</div>
-              </div>
-              <div className="hours-item">
-                <div className="hours-day">Sunday</div>
-                <div className="hours-time">12 PM — 11:00 PM</div>
-              </div>
             </div>
           </div>
         </div>
@@ -455,50 +602,18 @@ function App() {
         <div className="container">
           <div className="footer-content">
             <h2 className="footer-logo">Jaadugari</h2>
-            <p className="footer-tagline">Indian Restro & Bar — Morjim, Goa</p>
+            <p className="footer-tagline">Resto & Bar — Kings Central, NH1, Goa</p>
 
             <div className="footer-social">
-              <a
-                href="https://www.instagram.com"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="footer-social-link"
-                aria-label="Instagram"
-              >
-                IG
-              </a>
-              <a
-                href="https://www.facebook.com"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="footer-social-link"
-                aria-label="Facebook"
-              >
-                FB
-              </a>
-              <a
-                href="https://www.zomato.com"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="footer-social-link"
-                aria-label="Zomato"
-              >
-                Z
-              </a>
-              <a
-                href="https://wa.me/919876543210"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="footer-social-link"
-                aria-label="WhatsApp"
-              >
-                WA
-              </a>
+              <a href="https://www.instagram.com" target="_blank" rel="noopener noreferrer" className="footer-social-link" aria-label="Instagram">IG</a>
+              <a href="https://www.facebook.com" target="_blank" rel="noopener noreferrer" className="footer-social-link" aria-label="Facebook">FB</a>
+              <a href="https://www.zomato.com" target="_blank" rel="noopener noreferrer" className="footer-social-link" aria-label="Zomato">Z</a>
+              <a href="https://wa.me/919876543210" target="_blank" rel="noopener noreferrer" className="footer-social-link" aria-label="WhatsApp">WA</a>
             </div>
 
             <div className="footer-bottom">
               <p className="footer-copyright">
-                &copy; {new Date().getFullYear()} Jaadugari Indian Restro & Bar. All rights reserved.
+                &copy; {new Date().getFullYear()} Jaadugari Resto & Bar. All rights reserved.
               </p>
               <div className="footer-links">
                 <a href="#about" className="footer-link" onClick={(e) => { e.preventDefault(); scrollToSection('about') }}>About</a>

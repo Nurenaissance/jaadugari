@@ -6,7 +6,10 @@
       "Bash(npm create:*)",
       "Bash(npx:*)",
       "Bash(npm init:*)",
-      "Bash(npm install:*)"
+      "Bash(npm install:*)",
+      "WebFetch(domain:drive.google.com)",
+      "Bash(del \"C:\\\\Users\\\\Adarsh\\\\MyProject\\\\Deployed_Finals\\\\jaaudgari\\\\package-lock.json\")",
+      "WebFetch(domain:lh3.googleusercontent.com)"
     ]
   }
 }
