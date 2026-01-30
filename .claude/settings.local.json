@@ -1,0 +1,12 @@
+{
+  "permissions": {
+    "allow": [
+      "WebFetch(domain:www.zomato.com)",
+      "WebSearch",
+      "Bash(npm create:*)",
+      "Bash(npx:*)",
+      "Bash(npm init:*)",
+      "Bash(npm install:*)"
+    ]
+  }
+}
