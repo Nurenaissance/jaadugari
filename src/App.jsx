@@ -7,33 +7,32 @@ import { useState, useEffect } from 'react'
 const driveImg = (id) =>
   `https://lh3.googleusercontent.com/d/${id}`
 
-// Image assignments (from Google Drive folder)
 const IMAGES = {
-  hero: '1Bp1hjpJv32ZK0JLd2pCD47p1pCQhydcN',           // 1.jpg
-  about: '11aYO0t_doI_HbcqGwOPriE7Ttgd7cma6',          // 2.jpg
-  gallery1: '1vhtNceLPr3hjeo8FuA5lB8LNvhj8dxWL',       // 3.jpg
-  gallery2: '1yCv5uDlWAmlHCaOXzWjlNx41Sgcogm3f',       // 4.jpg
-  gallery3: '18eFHTr340l0xz_-dVXy89eJpVAB1p0MB',        // 5.jpg
-  gallery4: '1llkurSxm3u51Px4Ur0-byxpdm8GP8-Ch',        // 6.jpg
-  gallery5: '1KucxtpD4AUvQ5DPcP-sRb9pqYT3Mh9Vo',       // 7.jpg
-  gallery6: '1tJ6UKiEjxx8epbb4pqCQOYn6AHOf5hxn',        // 8.jpg
-  ambiance1: '1_b8L1PlUJTO8gHmx-YpvDj_5Be7o6PnK',      // 9.jpg
-  ambiance2: '1O3Xu0ZLE8onHB5ys7xS5WBDWE361FWuh',       // 10.jpg
-  ambiance3: '1JudrGNor9opKHBEv69DTyKEFY0QM5rY4',       // 10.jpg (2nd)
-  food1: '1QgITa4CFO_cPsxNfLZ2lkA5iiJy4-3aV',          // 11.jpg
-  food2: '1pRLRDJ5F9aSdUUmYDOb1sSrJaLysxMZM',          // 12.jpg
-  food3: '17tUqZfyvMKqjMbaSKfhnVaaoeEPlzmmS',           // 13.jpg
-  food4: '1h8bZ_DjBtiOXK3syoEpmyRBwrkmjs_Rp',           // 14.jpg
-  interior1: '11VzXMIRCrMtHvJsw-9dTv6e8tkNK3t7W',       // 15.jpg
-  interior2: '1pnTJA8BTjr_KlTJReHKDIqX285fJNWss',       // 16.jpg
-  bar1: '1WUNpc3C4uvrXqotd2PPF6wfASRx506KP',            // 17.jpg
-  bar2: '1g2iWxbS5nVgGc43sdr-Eg1LaoTg0_5WZ',            // 18.jpg
-  detail1: '1xoAmik93CGQBn1Dcr_kdm8gz4WcCzm1Q',         // 19.jpg
-  detail2: '1u225Nxt7GYnxndSrx0souFv0XVvhmR3d',          // 20.jpg
-  detail3: '10n1cliV-NfMi-0A61FGOW3bBuczTySwZ',          // 21.jpg
-  detail4: '1BCquoC1VIUJPJ8NHHLJs9lR147dNCyt0',          // 22.jpg
-  detail5: '1-mOpIxqwue8vN5w3_jTRtDcW8kRlqguI',         // 23.jpg
-  detail6: '1dqtwmo5BANoeDs1nY05ZwnQnuFUW8p9p',          // 24.jpg
+  hero: '1Bp1hjpJv32ZK0JLd2pCD47p1pCQhydcN',
+  about: '11aYO0t_doI_HbcqGwOPriE7Ttgd7cma6',
+  gallery1: '1vhtNceLPr3hjeo8FuA5lB8LNvhj8dxWL',
+  gallery2: '1yCv5uDlWAmlHCaOXzWjlNx41Sgcogm3f',
+  gallery3: '18eFHTr340l0xz_-dVXy89eJpVAB1p0MB',
+  gallery4: '1llkurSxm3u51Px4Ur0-byxpdm8GP8-Ch',
+  gallery5: '1KucxtpD4AUvQ5DPcP-sRb9pqYT3Mh9Vo',
+  gallery6: '1tJ6UKiEjxx8epbb4pqCQOYn6AHOf5hxn',
+  ambiance1: '1_b8L1PlUJTO8gHmx-YpvDj_5Be7o6PnK',
+  ambiance2: '1O3Xu0ZLE8onHB5ys7xS5WBDWE361FWuh',
+  ambiance3: '1JudrGNor9opKHBEv69DTyKEFY0QM5rY4',
+  food1: '1QgITa4CFO_cPsxNfLZ2lkA5iiJy4-3aV',
+  food2: '1pRLRDJ5F9aSdUUmYDOb1sSrJaLysxMZM',
+  food3: '17tUqZfyvMKqjMbaSKfhnVaaoeEPlzmmS',
+  food4: '1h8bZ_DjBtiOXK3syoEpmyRBwrkmjs_Rp',
+  interior1: '11VzXMIRCrMtHvJsw-9dTv6e8tkNK3t7W',
+  interior2: '1pnTJA8BTjr_KlTJReHKDIqX285fJNWss',
+  bar1: '1WUNpc3C4uvrXqotd2PPF6wfASRx506KP',
+  bar2: '1g2iWxbS5nVgGc43sdr-Eg1LaoTg0_5WZ',
+  detail1: '1xoAmik93CGQBn1Dcr_kdm8gz4WcCzm1Q',
+  detail2: '1u225Nxt7GYnxndSrx0souFv0XVvhmR3d',
+  detail3: '10n1cliV-NfMi-0A61FGOW3bBuczTySwZ',
+  detail4: '1BCquoC1VIUJPJ8NHHLJs9lR147dNCyt0',
+  detail5: '1-mOpIxqwue8vN5w3_jTRtDcW8kRlqguI',
+  detail6: '1dqtwmo5BANoeDs1nY05ZwnQnuFUW8p9p',
 }
 
 const VIDEO = {
@@ -41,6 +40,8 @@ const VIDEO = {
   collage: '1QR1_X7-oNONVqYRVfm9LefdgzPhPb7Qi',
   jaadugari: '17wnq15FzOYuRMdp8NFWdPrmgm69c56Kj',
 }
+
+const WEBHOOK_URL = 'https://nurenaiautomatic-b7hmdnb4fzbpbtbh.canadacentral-01.azurewebsites.net/webhook/d0eb1fcd-c4aa-4afa-b8e9-68e4178bd937'
 
 // ============================================
 // MENU DATA
@@ -95,6 +96,208 @@ const categories = [
 ]
 
 // ============================================
+// RESERVATION FORM COMPONENT
+// ============================================
+
+function ReservationModal({ isOpen, onClose }) {
+  const [form, setForm] = useState({
+    name: '',
+    phone: '',
+    email: '',
+    date: '',
+    time: '',
+    guests: '2',
+    message: '',
+  })
+  const [status, setStatus] = useState('idle') // idle | sending | success | error
+
+  const handleChange = (e) => {
+    setForm({ ...form, [e.target.name]: e.target.value })
+  }
+
+  const handleSubmit = async (e) => {
+    e.preventDefault()
+    setStatus('sending')
+
+    try {
+      const res = await fetch(WEBHOOK_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          source: 'jaadugari-website',
+          type: 'reservation',
+          ...form,
+          submitted_at: new Date().toISOString(),
+        }),
+      })
+
+      if (res.ok) {
+        setStatus('success')
+        setForm({ name: '', phone: '', email: '', date: '', time: '', guests: '2', message: '' })
+      } else {
+        setStatus('error')
+      }
+    } catch {
+      setStatus('error')
+    }
+  }
+
+  const handleOverlayClick = (e) => {
+    if (e.target === e.currentTarget) onClose()
+  }
+
+  if (!isOpen) return null
+
+  return (
+    <div className="modal-overlay" onClick={handleOverlayClick}>
+      <div className="modal-content">
+        <button className="modal-close" onClick={onClose}>&times;</button>
+
+        <div className="modal-header">
+          <span className="section-label">Reservations</span>
+          <h2 className="modal-title">Reserve a Table</h2>
+          <p className="modal-subtitle">Fill in your details and we'll confirm your reservation.</p>
+        </div>
+
+        {status === 'success' ? (
+          <div className="modal-success">
+            <div className="modal-success-icon">&#10003;</div>
+            <h3 className="modal-success-title">Reservation Received</h3>
+            <p className="modal-success-text">
+              Thank you! We'll get back to you shortly to confirm your table.
+            </p>
+            <button className="btn-primary" onClick={onClose} style={{ marginTop: '24px' }}>
+              Close
+            </button>
+          </div>
+        ) : (
+          <form className="reservation-form" onSubmit={handleSubmit}>
+            <div className="form-row">
+              <div className="form-group">
+                <label className="form-label">Full Name *</label>
+                <input
+                  type="text"
+                  name="name"
+                  value={form.name}
+                  onChange={handleChange}
+                  required
+                  className="form-input"
+                  placeholder="Your name"
+                />
+              </div>
+              <div className="form-group">
+                <label className="form-label">Phone Number *</label>
+                <input
+                  type="tel"
+                  name="phone"
+                  value={form.phone}
+                  onChange={handleChange}
+                  required
+                  className="form-input"
+                  placeholder="+91 XXXXX XXXXX"
+                />
+              </div>
+            </div>
+
+            <div className="form-group">
+              <label className="form-label">Email</label>
+              <input
+                type="email"
+                name="email"
+                value={form.email}
+                onChange={handleChange}
+                className="form-input"
+                placeholder="your@email.com"
+              />
+            </div>
+
+            <div className="form-row form-row--three">
+              <div className="form-group">
+                <label className="form-label">Date *</label>
+                <input
+                  type="date"
+                  name="date"
+                  value={form.date}
+                  onChange={handleChange}
+                  required
+                  className="form-input"
+                />
+              </div>
+              <div className="form-group">
+                <label className="form-label">Time *</label>
+                <select
+                  name="time"
+                  value={form.time}
+                  onChange={handleChange}
+                  required
+                  className="form-input"
+                >
+                  <option value="">Select</option>
+                  <option value="12:00">12:00 PM</option>
+                  <option value="12:30">12:30 PM</option>
+                  <option value="13:00">1:00 PM</option>
+                  <option value="13:30">1:30 PM</option>
+                  <option value="14:00">2:00 PM</option>
+                  <option value="14:30">2:30 PM</option>
+                  <option value="15:00">3:00 PM</option>
+                  <option value="19:00">7:00 PM</option>
+                  <option value="19:30">7:30 PM</option>
+                  <option value="20:00">8:00 PM</option>
+                  <option value="20:30">8:30 PM</option>
+                  <option value="21:00">9:00 PM</option>
+                  <option value="21:30">9:30 PM</option>
+                  <option value="22:00">10:00 PM</option>
+                  <option value="22:30">10:30 PM</option>
+                </select>
+              </div>
+              <div className="form-group">
+                <label className="form-label">Guests *</label>
+                <select
+                  name="guests"
+                  value={form.guests}
+                  onChange={handleChange}
+                  required
+                  className="form-input"
+                >
+                  {[1,2,3,4,5,6,7,8,9,10].map(n => (
+                    <option key={n} value={n}>{n} {n === 1 ? 'Guest' : 'Guests'}</option>
+                  ))}
+                  <option value="10+">10+ Guests</option>
+                </select>
+              </div>
+            </div>
+
+            <div className="form-group">
+              <label className="form-label">Special Requests</label>
+              <textarea
+                name="message"
+                value={form.message}
+                onChange={handleChange}
+                className="form-input form-textarea"
+                placeholder="Any dietary requirements, celebrations, seating preferences..."
+                rows="3"
+              />
+            </div>
+
+            <button
+              type="submit"
+              className="btn-primary form-submit"
+              disabled={status === 'sending'}
+            >
+              {status === 'sending' ? 'Sending...' : 'Confirm Reservation'}
+            </button>
+
+            {status === 'error' && (
+              <p className="form-error">Something went wrong. Please try again or call us directly.</p>
+            )}
+          </form>
+        )}
+      </div>
+    </div>
+  )
+}
+
+// ============================================
 // MAIN APP
 // ============================================
 
@@ -103,6 +306,7 @@ function App() {
   const [menuOpen, setMenuOpen] = useState(false)
   const [activeCategory, setActiveCategory] = useState('starters')
   const [lightbox, setLightbox] = useState(null)
+  const [reserveOpen, setReserveOpen] = useState(false)
 
   useEffect(() => {
     const handleScroll = () => {
@@ -127,12 +331,17 @@ function App() {
     return () => observer.disconnect()
   }, [activeCategory])
 
+  // Lock body scroll when modal is open
+  useEffect(() => {
+    document.body.style.overflow = (reserveOpen || lightbox !== null) ? 'hidden' : ''
+    return () => { document.body.style.overflow = '' }
+  }, [reserveOpen, lightbox])
+
   const scrollToSection = (id) => {
     setMenuOpen(false)
     document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' })
   }
 
-  // Gallery images for the photo grid
   const galleryImages = [
     { id: IMAGES.gallery1, label: 'Ambiance' },
     { id: IMAGES.food1, label: 'Cuisine' },
@@ -150,6 +359,9 @@ function App() {
 
   return (
     <>
+      {/* ========== RESERVATION MODAL ========== */}
+      <ReservationModal isOpen={reserveOpen} onClose={() => setReserveOpen(false)} />
+
       {/* ========== LIGHTBOX ========== */}
       {lightbox !== null && (
         <div className="lightbox" onClick={() => setLightbox(null)}>
@@ -167,7 +379,7 @@ function App() {
       <nav className={`navbar ${scrolled ? 'scrolled' : ''}`}>
         <div className="nav-logo">
           <span className="nav-logo-text">Jaadugari</span>
-          <span className="nav-logo-tagline">Resto & Bar</span>
+          <span className="nav-logo-tagline">Indian Resto & Bar</span>
         </div>
 
         <button
@@ -186,9 +398,9 @@ function App() {
           <li><a href="#menu" onClick={() => scrollToSection('menu')}>Menu</a></li>
           <li><a href="#contact" onClick={() => scrollToSection('contact')}>Contact</a></li>
           <li>
-            <a href="tel:+919876543210" className="nav-reserve-btn">
+            <button className="nav-reserve-btn" onClick={() => { setMenuOpen(false); setReserveOpen(true) }}>
               Reserve a Table
-            </a>
+            </button>
           </li>
         </ul>
       </nav>
@@ -212,10 +424,10 @@ function App() {
 
         <div className="hero-content">
           <div className="hero-ornament"></div>
-          <p className="hero-subtitle-top">Kings Central NH1 &middot; Main GT Road &middot; Goa</p>
+          <p className="hero-subtitle-top">Lamrin &middot; Morjim &middot; Goa</p>
           <h1 className="hero-title">
             Jaadugari
-            <span className="hero-title-accent">Resto & Bar</span>
+            <span className="hero-title-accent">Indian Resto & Bar</span>
           </h1>
 
           <div className="hero-badge">
@@ -225,7 +437,7 @@ function App() {
           <p className="hero-description">
             A new chapter of Indian culinary magic is about to unfold.
             Premium dining, handcrafted cocktails, and an ambiance
-            that casts its spell — coming to Kings Central, NH1.
+            that casts its spell — arriving at Lamrin, Morjim.
           </p>
 
           <div className="hero-divider">
@@ -234,11 +446,11 @@ function App() {
             <span className="hero-divider-line"></span>
           </div>
           <div className="hero-cta-group">
-            <a href="#menu" className="btn-primary" onClick={(e) => { e.preventDefault(); scrollToSection('menu') }}>
+            <button className="btn-primary" onClick={() => setReserveOpen(true)}>
+              Reserve a Table
+            </button>
+            <a href="#menu" className="btn-secondary" onClick={(e) => { e.preventDefault(); scrollToSection('menu') }}>
               Explore Menu
-            </a>
-            <a href="#contact" className="btn-secondary" onClick={(e) => { e.preventDefault(); scrollToSection('contact') }}>
-              Get in Touch
             </a>
           </div>
         </div>
@@ -270,8 +482,8 @@ function App() {
               </h2>
               <p className="about-text">
                 Jaadugari — meaning "enchantress" — is born from a deep love for India's
-                diverse culinary heritage and the magical spirit of Goa. Located at the
-                prestigious Kings Central on NH1, we bring you an extraordinary dining
+                diverse culinary heritage and the magical spirit of Goa. Nestled in
+                the serene beauty of Lamrin, Morjim, we bring you an extraordinary dining
                 experience where every dish tells a story.
               </p>
               <p className="about-text">
@@ -345,8 +557,8 @@ function App() {
               <div className="experience-label">Days a Week</div>
             </div>
             <div className="experience-item fade-in">
-              <div className="experience-number">NH1</div>
-              <div className="experience-label">Kings Central</div>
+              <div className="experience-number">4.8</div>
+              <div className="experience-label">Guest Rating</div>
             </div>
           </div>
         </div>
@@ -537,7 +749,7 @@ function App() {
             "Jaadugari is not just a restaurant — it is an experience.
             The flavours, the ambiance, the warmth — pure magic."
           </p>
-          <p className="quote-author fade-in">Coming Soon to Kings Central, NH1</p>
+          <p className="quote-author fade-in">A Beloved Guest</p>
         </div>
       </section>
 
@@ -548,8 +760,8 @@ function App() {
             <span className="section-label">Find Us</span>
             <h2 className="section-title">Visit Jaadugari</h2>
             <p className="section-subtitle">
-              We look forward to welcoming you. The magic awaits
-              at Kings Central on Main GT Road, NH1.
+              We look forward to welcoming you. Reserve your table
+              or simply walk in — the magic awaits.
             </p>
             <div className="section-ornament">
               <span className="section-ornament-line"></span>
@@ -563,10 +775,10 @@ function App() {
               <div className="contact-card-icon">&#128205;</div>
               <h3 className="contact-card-title">Location</h3>
               <p className="contact-card-text">
-                Jaadugari Resto & Bar<br />
-                Kings Central, NH1<br />
-                Main GT Road<br />
-                Goa
+                Jaadugari Indian Resto & Bar<br />
+                Lamrin Morjim, 664/A<br />
+                Munugwada, Malekarwada<br />
+                Morjim, Goa 403512
               </p>
             </div>
 
@@ -579,6 +791,10 @@ function App() {
                 <a href="tel:+919876543211" className="contact-card-link">+91 98765 43211</a>
                 <br /><br />
                 <a href="mailto:hello@jaadugari.com" className="contact-card-link">hello@jaadugari.com</a>
+                <br /><br />
+                <button className="btn-primary" onClick={() => setReserveOpen(true)} style={{ fontSize: '10px', padding: '12px 24px' }}>
+                  Book Online
+                </button>
               </p>
             </div>
 
@@ -586,13 +802,46 @@ function App() {
               <div className="contact-card-icon">&#128337;</div>
               <h3 className="contact-card-title">Hours</h3>
               <p className="contact-card-text">
-                <strong>Opening Soon</strong><br /><br />
-                <strong>Expected Hours:</strong><br />
-                Lunch: 12:00 PM — 3:30 PM<br />
-                Dinner: 7:00 PM — 11:30 PM<br />
-                Bar: 12:00 PM — 12:00 AM
+                <strong>Lunch</strong><br />
+                12:00 PM — 3:30 PM<br /><br />
+                <strong>Dinner</strong><br />
+                7:00 PM — 11:30 PM<br /><br />
+                <strong>Bar</strong><br />
+                12:00 PM — 12:00 AM
               </p>
             </div>
+          </div>
+        </div>
+      </section>
+
+      {/* ========== UPCOMING LOCATION ========== */}
+      <section className="section upcoming-section">
+        <div className="container">
+          <div className="section-header fade-in">
+            <span className="section-label">Coming Soon</span>
+            <h2 className="section-title">Our Next Chapter</h2>
+            <p className="section-subtitle">
+              The magic of Jaadugari is expanding. A brand new outpost is on its way.
+            </p>
+            <div className="section-ornament">
+              <span className="section-ornament-line"></span>
+              <span className="section-ornament-diamond"></span>
+              <span className="section-ornament-line"></span>
+            </div>
+          </div>
+
+          <div className="upcoming-card fade-in">
+            <div className="upcoming-badge">Upcoming</div>
+            <h3 className="upcoming-title">Jaadugari &mdash; Kings Central</h3>
+            <p className="upcoming-address">
+              Kings Central, NH1<br />
+              Main GT Road, Goa
+            </p>
+            <div className="upcoming-divider"></div>
+            <p className="upcoming-text">
+              Our second location brings the same enchanting dining experience
+              to the bustling GT Road corridor. Stay tuned for the grand opening.
+            </p>
           </div>
         </div>
       </section>
@@ -602,7 +851,7 @@ function App() {
         <div className="container">
           <div className="footer-content">
             <h2 className="footer-logo">Jaadugari</h2>
-            <p className="footer-tagline">Resto & Bar — Kings Central, NH1, Goa</p>
+            <p className="footer-tagline">Indian Resto & Bar — Lamrin, Morjim, Goa</p>
 
             <div className="footer-social">
               <a href="https://www.instagram.com" target="_blank" rel="noopener noreferrer" className="footer-social-link" aria-label="Instagram">IG</a>
@@ -613,7 +862,7 @@ function App() {
 
             <div className="footer-bottom">
               <p className="footer-copyright">
-                &copy; {new Date().getFullYear()} Jaadugari Resto & Bar. All rights reserved.
+                &copy; {new Date().getFullYear()} Jaadugari Indian Resto & Bar. All rights reserved.
               </p>
               <div className="footer-links">
                 <a href="#about" className="footer-link" onClick={(e) => { e.preventDefault(); scrollToSection('about') }}>About</a>
