@@ -9,7 +9,9 @@
       "Bash(npm install:*)",
       "WebFetch(domain:drive.google.com)",
       "Bash(del \"C:\\\\Users\\\\Adarsh\\\\MyProject\\\\Deployed_Finals\\\\jaaudgari\\\\package-lock.json\")",
-      "WebFetch(domain:lh3.googleusercontent.com)"
+      "WebFetch(domain:lh3.googleusercontent.com)",
+      "Bash(git rm:*)",
+      "Bash(git add:*)"
     ]
   }
 }
