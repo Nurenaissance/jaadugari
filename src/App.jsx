@@ -952,7 +952,11 @@ function App() {
         <div className="container">
           <div className="footer-content">
             <h2 className="footer-logo">Jaadugari</h2>
-            <p className="footer-tagline">Indian Resto & Bar — Lamrin, Morjim, Goa</p>
+            <p className="footer-tagline">
+              Indian Resto & Bar — Lamrin, Morjim, Goa
+              <br />
+              Lamrin Norwood Green, Palampur
+            </p>
 
             <div className="footer-social">
               <a href="https://www.instagram.com" target="_blank" rel="noopener noreferrer" className="footer-social-link" aria-label="Instagram">IG</a>
