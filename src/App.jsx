@@ -1,454 +1,35 @@
 import { useState, useEffect } from 'react'
+import SiteNav from './components/SiteNav'
+import SiteFooter from './components/SiteFooter'
+import ReservationModal from './components/ReservationModal'
+import { driveImg, IMAGES, VIDEO } from './lib/media'
+import { menuData, categories } from './data/menu'
+import { getVenue } from './data/venues'
+import { useDocumentMeta } from './lib/meta'
 
-// ============================================
-// GOOGLE DRIVE IMAGE HELPERS
-// ============================================
-
-const driveImg = (id) =>
-  `https://lh3.googleusercontent.com/d/${id}`
-
-const IMAGES = {
-  hero: '1Bp1hjpJv32ZK0JLd2pCD47p1pCQhydcN',
-  about: '11aYO0t_doI_HbcqGwOPriE7Ttgd7cma6',
-  gallery1: '1vhtNceLPr3hjeo8FuA5lB8LNvhj8dxWL',
-  gallery2: '1yCv5uDlWAmlHCaOXzWjlNx41Sgcogm3f',
-  gallery3: '18eFHTr340l0xz_-dVXy89eJpVAB1p0MB',
-  gallery4: '1llkurSxm3u51Px4Ur0-byxpdm8GP8-Ch',
-  gallery5: '1KucxtpD4AUvQ5DPcP-sRb9pqYT3Mh9Vo',
-  gallery6: '1tJ6UKiEjxx8epbb4pqCQOYn6AHOf5hxn',
-  ambiance1: '1_b8L1PlUJTO8gHmx-YpvDj_5Be7o6PnK',
-  ambiance2: '1O3Xu0ZLE8onHB5ys7xS5WBDWE361FWuh',
-  ambiance3: '1JudrGNor9opKHBEv69DTyKEFY0QM5rY4',
-  food1: '1QgITa4CFO_cPsxNfLZ2lkA5iiJy4-3aV',
-  food2: '1pRLRDJ5F9aSdUUmYDOb1sSrJaLysxMZM',
-  food3: '17tUqZfyvMKqjMbaSKfhnVaaoeEPlzmmS',
-  food4: '1h8bZ_DjBtiOXK3syoEpmyRBwrkmjs_Rp',
-  interior1: '11VzXMIRCrMtHvJsw-9dTv6e8tkNK3t7W',
-  interior2: '1pnTJA8BTjr_KlTJReHKDIqX285fJNWss',
-  bar1: '1WUNpc3C4uvrXqotd2PPF6wfASRx506KP',
-  bar2: '1g2iWxbS5nVgGc43sdr-Eg1LaoTg0_5WZ',
-  detail1: '1xoAmik93CGQBn1Dcr_kdm8gz4WcCzm1Q',
-  detail2: '1u225Nxt7GYnxndSrx0souFv0XVvhmR3d',
-  detail3: '10n1cliV-NfMi-0A61FGOW3bBuczTySwZ',
-  detail4: '1BCquoC1VIUJPJ8NHHLJs9lR147dNCyt0',
-  detail5: '1-mOpIxqwue8vN5w3_jTRtDcW8kRlqguI',
-  detail6: '1dqtwmo5BANoeDs1nY05ZwnQnuFUW8p9p',
-}
-
-const VIDEO = {
-  cocktail: '1br9vizFkr9yAxbWsBH1eFQIY4FQNv1hv',
-  collage: '1QR1_X7-oNONVqYRVfm9LefdgzPhPb7Qi',
-  jaadugari: '17wnq15FzOYuRMdp8NFWdPrmgm69c56Kj',
-}
-
-const WEBHOOK_URL = 'https://nurenaiautomatic-b7hmdnb4fzbpbtbh.canadacentral-01.azurewebsites.net/webhook/d0eb1fcd-c4aa-4afa-b8e9-68e4178bd937'
-
-// ============================================
-// MENU DATA
-// ============================================
-
-const menuData = {
-  starters: [
-    { name: 'Patte Ki Chaat', desc: 'Crispy spinach leaves, tangy tamarind, yoghurt mousse, pomegranate', price: '₹395', tag: 'signature' },
-    { name: 'Bharwan Gucchi', desc: 'Wild Himalayan morels stuffed with paneer khurchan, saffron cream', price: '₹695', tag: "chef's pick" },
-    { name: 'Mutton Ghee Roast', desc: 'Slow-roasted Mangalorean-style lamb, curry leaf tempering, coconut', price: '₹595' },
-    { name: 'Prawn Koliwada', desc: 'Goan rock prawns, semolina crust, green chutney, lemon zest', price: '₹545' },
-    { name: 'Amritsari Fish Tikka', desc: 'Fresh catch marinated in carom & chaat masala, tandoor-kissed', price: '₹495' },
-    { name: 'Paneer Malai Tikka', desc: 'Silken cottage cheese, cashew-cream marinade, charcoal-grilled', price: '₹425' },
-    { name: 'Crab Xec Xec', desc: 'Goan crab preparation with roasted coconut and red chilli masala', price: '₹645', tag: 'goan special' },
-    { name: 'Chicken Seekh Gilafi', desc: 'Minced chicken seekh with peppers, coriander & green chilli', price: '₹445' },
-  ],
-  mains: [
-    { name: 'Laal Maas', desc: 'Fiery Rajasthani mutton curry, mathania chillies, slow-cooked 8 hours', price: '₹695', tag: 'signature' },
-    { name: 'Raw Mango Prawn Curry', desc: 'Goan-style tiger prawns, raw mango, coconut milk, curry leaf', price: '₹645' },
-    { name: 'Ker Sangri Kofta', desc: 'Desert berry & bean dumplings in rich, aromatic tomato gravy', price: '₹495', tag: 'vegetarian' },
-    { name: 'Goan Fish Curry Rice', desc: 'Fresh kingfish, kokum-laced coconut curry, steamed Goan rice', price: '₹595', tag: 'goan special' },
-    { name: 'Butter Chicken', desc: 'The timeless classic — smoky tandoori chicken, velvety makhani gravy', price: '₹545' },
-    { name: 'Dal Jaadugari', desc: 'Our signature black lentils, 24-hour slow cook, finished with cream', price: '₹395', tag: 'signature' },
-    { name: 'Rogan Josh', desc: 'Kashmir valley lamb, whole spice aromatics, saffron-infused sauce', price: '₹675' },
-    { name: 'Pork Vindaloo', desc: 'Classic Goan pork, toddy vinegar, fiery red spice paste', price: '₹575', tag: 'goan special' },
-  ],
-  desserts: [
-    { name: 'Bebinca', desc: 'Traditional Goan seven-layer pudding, coconut cream, nutmeg', price: '₹395', tag: 'goan special' },
-    { name: 'Gulab Jamun Brulee', desc: 'Rose-scented custard, caramelised sugar, cardamom crumble', price: '₹345', tag: 'signature' },
-    { name: 'Saffron Kulfi', desc: 'Hand-churned Lucknowi kulfi, pistachio praline, rose petal', price: '₹295' },
-    { name: 'Chocolate Fondant', desc: 'Molten dark chocolate, salted caramel, vanilla bean gelato', price: '₹445' },
-    { name: 'Mango Phirni', desc: 'Alphonso mango, slow-set rice pudding, almond flakes', price: '₹295' },
-    { name: 'Mishti Doi Panna Cotta', desc: 'Bengali sweet yoghurt panna cotta, date-palm jaggery', price: '₹345' },
-  ],
-  signatureCocktails: [
-    { name: 'Maya Jaal', desc: 'White Rum, Kokum Rose Cordial, Bubbles — Sweet Tart Coastal Magic', price: '₹550', tag: 'signature' },
-    { name: 'Neel Apsara', desc: 'Gin, Honey, Lemongrass, Blue Pea Flower — Colour Changing Enchantment', price: '₹650', tag: 'signature' },
-    { name: 'Banjaran Breeze', desc: 'Vodka, Watermelon, Roasted Cumin & Lime — Rustic Yet Refreshing', price: '₹700' },
-    { name: 'Jaadugari Picante', desc: 'Smoked Chili Oil, Mint & Coriander Cordial, Red Chili & Orange — Bold and Fiery', price: '₹750', tag: 'signature' },
-    { name: "Jadugar's Old Book", desc: 'Bourbon, Jaggery, Bitters — Deep, Warm & Vintage', price: '₹700' },
-    { name: 'Coconut Conjuring', desc: 'White Rum, Coconut Water, Kaffir Lime — Tropical Spell', price: '₹520' },
-    { name: 'Mirage Martini', desc: 'Vodka, Aloe Vera, Green Apple Vermouth — Clean and Crisp', price: '₹520' },
-    { name: 'Orange Smoke', desc: 'Orange Vodka, Honey Cordial, Smoke — Luxurious and Dramatic', price: '₹650' },
-    { name: 'Tulsi', desc: 'Gin, Tulsi, Chamomile — Herbal Refreshment', price: '₹700' },
-  ],
-  classicCocktails: [
-    { name: 'Old Fashioned', desc: '60ml — The timeless bourbon classic', price: '₹520' },
-    { name: 'Negroni', desc: '60ml — Gin, Campari, sweet vermouth', price: '₹540' },
-    { name: 'Mojito', desc: '60ml — White rum, mint, lime, soda', price: '₹420' },
-    { name: 'Daiquiri', desc: '60ml — Rum, lime, sugar — tropical perfection', price: '₹440' },
-    { name: 'Cosmopolitan', desc: '60ml — Vodka, cranberry, triple sec, lime', price: '₹460' },
-    { name: 'Bloody Mary', desc: '60ml — Vodka, tomato juice, spices', price: '₹460' },
-    { name: 'Whiskey Sour', desc: '60ml — Whiskey, lemon, sugar, egg white', price: '₹480' },
-    { name: 'Martini (Gin / Vodka)', desc: '60ml — Dry vermouth, stirred or shaken', price: '₹500' },
-    { name: 'Espresso Martini', desc: '60ml — Vodka/Whiskey, espresso, coffee liqueur', price: '₹600' },
-    { name: 'Margarita', desc: '60ml — Tequila, lime, triple sec', price: '₹650' },
-    { name: 'Long Island Iced Tea', desc: '60ml — Vodka, rum, gin, tequila, triple sec', price: '₹750' },
-  ],
-  mocktails: [
-    { name: 'Virgin Mojito', desc: 'Mint, lime & soda — classic refresher', price: '₹200' },
-    { name: 'Kokum Cooler', desc: 'Kokum, mint & soda — tangy and refreshing', price: '₹220' },
-    { name: 'Coconut Lime Cooler', desc: 'Tender coconut & lime — tropical chill', price: '₹220' },
-    { name: 'Watermelon Basil Smash', desc: 'Fresh watermelon, basil & lime', price: '₹230' },
-    { name: 'Apple Cucumber Spritz', desc: 'Light, fresh and hydrating', price: '₹230' },
-  ],
-  whiskey: [
-    { name: 'Blenders Pride', desc: '30ml', price: '₹150' },
-    { name: 'Black Dog', desc: '30ml', price: '₹200' },
-    { name: 'Jameson', desc: '30ml', price: '₹240' },
-    { name: "Ballantine's", desc: '30ml', price: '₹250' },
-    { name: 'JW Red Label', desc: '30ml', price: '₹300' },
-    { name: 'JW Black Label', desc: '30ml', price: '₹400' },
-    { name: 'Amrut Single Malt', desc: '30ml — Indian single malt', price: '₹480' },
-    { name: 'Glenlivet 12', desc: '30ml — Smooth and fruity', price: '₹540' },
-    { name: 'Glenfiddich 12', desc: '30ml — Classic single malt', price: '₹550' },
-  ],
-  scotch: [
-    { name: "Dewar's 12 White Label", desc: 'Balanced, silky and refined', price: '₹300' },
-    { name: 'Monkey Shoulder', desc: 'Smooth blended malt', price: '₹400' },
-    { name: "Maker's Mark", desc: 'Soft, wheated bourbon with vanilla notes', price: '₹480', tag: 'premium' },
-    { name: 'Jameson Black Barrel', desc: 'Toasted oak richness with vanilla sweetness', price: '₹520', tag: 'premium' },
-    { name: 'Woodford Reserve', desc: 'Bourbon — full-bodied with caramel and spice', price: '₹520', tag: 'premium' },
-    { name: 'Bushmills 10 YO', desc: 'Single Malt — light, fruity and smooth', price: '₹560', tag: 'premium' },
-    { name: 'Glenmorangie Original 10 YO', desc: 'Floral, honeyed and elegant', price: '₹620', tag: 'premium' },
-    { name: 'JW Gold Label Reserve', desc: 'Smooth, honeyed and celebratory', price: '₹620' },
-    { name: 'Chivas Regal 18 YO', desc: 'Rich layers of dried fruit and spice', price: '₹680', tag: 'premium' },
-    { name: 'Talisker Storm', desc: 'Maritime smoke and peppery finish', price: '₹720', tag: 'premium' },
-    { name: 'Oban 14 YO', desc: 'Coastal, balanced and refined', price: '₹780', tag: 'premium' },
-    { name: 'The Macallan 12 YO', desc: 'Rich sherry notes, smooth and luxurious', price: '₹820', tag: 'premium' },
-    { name: 'Lagavulin 16 YO', desc: 'Bold peat smoke with deep complexity', price: '₹950', tag: 'premium' },
-    { name: "Yamazaki Distiller's Reserve", desc: 'Japanese — elegant, fruity and complex', price: '₹980', tag: 'ultra premium' },
-    { name: 'Hibiki Japanese Harmony', desc: 'Japanese — smooth, floral and perfectly balanced', price: '₹1,050', tag: 'ultra premium' },
-  ],
-  vodka: [
-    { name: 'Magic Moments', desc: '30ml', price: '₹150' },
-    { name: 'Smirnoff', desc: '30ml — Clean and classic', price: '₹180' },
-    { name: 'Absolut', desc: '30ml — Swedish smoothness', price: '₹220' },
-    { name: 'Ketel One', desc: '30ml — Crisp and refined', price: '₹300' },
-    { name: 'Ciroc', desc: '30ml — Grape-based luxury', price: '₹380', tag: 'premium' },
-    { name: 'Grey Goose', desc: '30ml — French ultra-premium', price: '₹420', tag: 'premium' },
-  ],
-  gin: [
-    { name: 'Beefeater', desc: 'Traditional London Dry, crisp and clean', price: '₹260' },
-    { name: 'Bombay Sapphire', desc: 'Light, aromatic and versatile', price: '₹280' },
-    { name: 'Tanqueray London Dry', desc: 'Bold juniper backbone, classic G&T favourite', price: '₹300' },
-    { name: 'Greater Than', desc: 'Indian — Classic London Dry style, clean & balanced', price: '₹320' },
-    { name: 'Terai Gin', desc: 'Indian craft — fresh citrus-led, very smooth', price: '₹340' },
-    { name: 'Nilgiris Indian Dry Gin', desc: 'Herbal, floral, South Indian botanicals', price: '₹350' },
-    { name: 'Stranger & Sons', desc: "Goa's pride — juniper-forward with Indian botanicals", price: '₹360', tag: 'must try' },
-    { name: 'Jaisalmer Indian Craft Gin', desc: 'Royal Indian botanicals, coriander & vetiver', price: '₹380' },
-    { name: "Hendrick's Gin", desc: 'Rose & cucumber infused — elegant and floral', price: '₹420', tag: 'premium' },
-    { name: 'Hapusa Himalayan Gin', desc: 'Wild Himalayan juniper, earthy and bold', price: '₹420', tag: 'premium' },
-  ],
-  tequilaRum: [
-    { name: 'Old Monk', desc: 'Rum — The Indian classic', price: '₹150' },
-    { name: 'Bacardi White', desc: 'Rum — Clean and mixable', price: '₹180' },
-    { name: 'Captain Morgan Dark', desc: 'Rum — Rich and spiced', price: '₹200' },
-    { name: 'Villa Vercelli', desc: 'Tequila', price: '₹250' },
-    { name: 'Malibu', desc: 'Rum — Coconut-flavoured', price: '₹260' },
-    { name: 'Sierra Silver', desc: 'Tequila', price: '₹260' },
-    { name: 'Sauza Gold', desc: 'Tequila', price: '₹300' },
-    { name: 'Olmeca Blanco', desc: 'Tequila', price: '₹320' },
-    { name: 'Olmeca Gold', desc: 'Tequila', price: '₹340' },
-    { name: 'Camino Blanco', desc: 'Tequila', price: '₹450' },
-    { name: '1800 Blanco', desc: 'Tequila — Premium', price: '₹460', tag: 'premium' },
-    { name: 'Don Julio Blanco', desc: 'Tequila — Premium', price: '₹520', tag: 'premium' },
-    { name: 'Patrón Silver', desc: 'Tequila — Premium', price: '₹580', tag: 'premium' },
-  ],
-  liqueurs: [
-    { name: 'Triple Sec', desc: 'Orange liqueur — essential for cocktails', price: '₹200' },
-    { name: 'Kahlúa', desc: 'Coffee liqueur — rich and sweet', price: '₹240' },
-    { name: 'Aperol', desc: 'Italian aperitif — bitter-sweet orange', price: '₹240' },
-    { name: 'Baileys', desc: 'Irish cream — smooth and indulgent', price: '₹260' },
-    { name: 'Campari', desc: 'Italian bitter — classic Negroni base', price: '₹260' },
-    { name: 'Southern Comfort', desc: 'Peach-flavoured whiskey liqueur', price: '₹260' },
-    { name: 'Jägermeister', desc: 'Herbal German liqueur — 56 botanicals', price: '₹280' },
-    { name: 'Sambuca', desc: 'Italian anise-flavoured liqueur', price: '₹280' },
-    { name: 'Cointreau', desc: 'Premium French orange liqueur', price: '₹320' },
-  ],
-  beer: [
-    { name: 'Kingfisher Premium', desc: 'Bucket 7 pints ₹1,000', price: '₹180' },
-    { name: 'Kingfisher Strong', desc: 'Indian classic strong beer', price: '₹190' },
-    { name: 'Peoples', desc: 'Smooth and easy-drinking', price: '₹200' },
-    { name: 'Kingfisher Ultra', desc: 'Bucket 7 pints ₹1,200', price: '₹220' },
-    { name: 'Bira 91 Boom Strong', desc: 'Indian craft strong', price: '₹230' },
-    { name: 'Tuborg Green', desc: 'Light European lager', price: '₹230' },
-    { name: 'Bira 91 Blonde', desc: 'Indian craft lager', price: '₹240' },
-    { name: 'Budweiser', desc: 'American classic', price: '₹240' },
-    { name: 'Bira 91 White', desc: 'Indian craft wheat ale', price: '₹260' },
-    { name: 'Budweiser Magnum', desc: 'Premium strong', price: '₹260' },
-    { name: 'Peoples Beer', desc: 'Goa — Local Craft', price: '₹280', tag: 'goan special' },
-    { name: 'Heineken', desc: 'Imported — Dutch premium', price: '₹320', tag: 'imported' },
-    { name: 'Corona', desc: 'Imported — Mexican classic', price: '₹360', tag: 'imported' },
-    { name: 'Hoegaarden', desc: 'Imported — Belgian wheat', price: '₹380', tag: 'imported' },
-  ],
-  shots: [
-    { name: 'Jamun Shot', desc: 'Indian berry-flavoured shot', price: '₹220' },
-    { name: 'Coconut Rum Shot', desc: 'Tropical coconut rum', price: '₹220' },
-    { name: 'Lemon Drop', desc: 'Sweet and citrusy', price: '₹240' },
-    { name: 'Mango Masala Shot', desc: 'Spiced mango flavour', price: '₹240' },
-    { name: 'Chilli Tequila', desc: 'Fiery tequila kick', price: '₹240' },
-    { name: 'Tequila Slammer', desc: 'Tequila and soda — fast and fun', price: '₹260' },
-    { name: 'Coffee Kick', desc: 'Espresso-powered shot', price: '₹260' },
-    { name: 'Kamikaze', desc: 'Vodka, triple sec, lime', price: '₹280' },
-    { name: 'Jadugari Surprise Shot', desc: 'Spicy, Tangy — house special', price: '₹300', tag: 'signature' },
-    { name: 'B52', desc: 'Kahlúa, Baileys, Grand Marnier — layered', price: '₹320' },
-    { name: 'Jäger Bomb', desc: 'Jägermeister and energy drink', price: '₹350' },
-  ],
-}
-
-const categories = [
-  { key: 'starters', label: 'Starters' },
-  { key: 'mains', label: 'Mains' },
-  { key: 'desserts', label: 'Desserts' },
-  { key: 'signatureCocktails', label: 'Signature Cocktails' },
-  { key: 'classicCocktails', label: 'Classic Cocktails' },
-  { key: 'mocktails', label: 'Mocktails' },
-  { key: 'whiskey', label: 'Whiskey' },
-  { key: 'scotch', label: 'Scotch & Premium' },
-  { key: 'vodka', label: 'Vodka' },
-  { key: 'gin', label: 'Gin' },
-  { key: 'tequilaRum', label: 'Tequila & Rum' },
-  { key: 'liqueurs', label: 'Liqueurs' },
-  { key: 'beer', label: 'Beer' },
-  { key: 'shots', label: 'Shots' },
-]
-
-// ============================================
-// RESERVATION FORM COMPONENT
-// ============================================
-
-function ReservationModal({ isOpen, onClose }) {
-  const [form, setForm] = useState({
-    name: '',
-    phone: '',
-    email: '',
-    date: '',
-    time: '',
-    guests: '2',
-    message: '',
-  })
-  const [status, setStatus] = useState('idle') // idle | sending | success | error
-
-  const handleChange = (e) => {
-    setForm({ ...form, [e.target.name]: e.target.value })
-  }
-
-  const handleSubmit = async (e) => {
-    e.preventDefault()
-    setStatus('sending')
-
-    try {
-      const res = await fetch(WEBHOOK_URL, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          source: 'jaadugari-website',
-          type: 'reservation',
-          ...form,
-          submitted_at: new Date().toISOString(),
-        }),
-      })
-
-      if (res.ok) {
-        setStatus('success')
-        setForm({ name: '', phone: '', email: '', date: '', time: '', guests: '2', message: '' })
-      } else {
-        setStatus('error')
-      }
-    } catch {
-      setStatus('error')
-    }
-  }
-
-  const handleOverlayClick = (e) => {
-    if (e.target === e.currentTarget) onClose()
-  }
-
-  if (!isOpen) return null
-
-  return (
-    <div className="modal-overlay" onClick={handleOverlayClick}>
-      <div className="modal-content">
-        <button className="modal-close" onClick={onClose}>&times;</button>
-
-        <div className="modal-header">
-          <span className="section-label">Reservations</span>
-          <h2 className="modal-title">Reserve a Table</h2>
-          <p className="modal-subtitle">Fill in your details and we'll confirm your reservation.</p>
-        </div>
-
-        {status === 'success' ? (
-          <div className="modal-success">
-            <div className="modal-success-icon">&#10003;</div>
-            <h3 className="modal-success-title">Reservation Received</h3>
-            <p className="modal-success-text">
-              Thank you! We'll get back to you shortly to confirm your table.
-            </p>
-            <button className="btn-primary" onClick={onClose} style={{ marginTop: '24px' }}>
-              Close
-            </button>
-          </div>
-        ) : (
-          <form className="reservation-form" onSubmit={handleSubmit}>
-            <div className="form-row">
-              <div className="form-group">
-                <label className="form-label">Full Name *</label>
-                <input
-                  type="text"
-                  name="name"
-                  value={form.name}
-                  onChange={handleChange}
-                  required
-                  className="form-input"
-                  placeholder="Your name"
-                />
-              </div>
-              <div className="form-group">
-                <label className="form-label">Phone Number *</label>
-                <input
-                  type="tel"
-                  name="phone"
-                  value={form.phone}
-                  onChange={handleChange}
-                  required
-                  className="form-input"
-                  placeholder="+91 XXXXX XXXXX"
-                />
-              </div>
-            </div>
-
-            <div className="form-group">
-              <label className="form-label">Email</label>
-              <input
-                type="email"
-                name="email"
-                value={form.email}
-                onChange={handleChange}
-                className="form-input"
-                placeholder="your@email.com"
-              />
-            </div>
-
-            <div className="form-row form-row--three">
-              <div className="form-group">
-                <label className="form-label">Date *</label>
-                <input
-                  type="date"
-                  name="date"
-                  value={form.date}
-                  onChange={handleChange}
-                  required
-                  className="form-input"
-                />
-              </div>
-              <div className="form-group">
-                <label className="form-label">Time *</label>
-                <select
-                  name="time"
-                  value={form.time}
-                  onChange={handleChange}
-                  required
-                  className="form-input"
-                >
-                  <option value="">Select</option>
-                  <option value="12:00">12:00 PM</option>
-                  <option value="12:30">12:30 PM</option>
-                  <option value="13:00">1:00 PM</option>
-                  <option value="13:30">1:30 PM</option>
-                  <option value="14:00">2:00 PM</option>
-                  <option value="14:30">2:30 PM</option>
-                  <option value="15:00">3:00 PM</option>
-                  <option value="19:00">7:00 PM</option>
-                  <option value="19:30">7:30 PM</option>
-                  <option value="20:00">8:00 PM</option>
-                  <option value="20:30">8:30 PM</option>
-                  <option value="21:00">9:00 PM</option>
-                  <option value="21:30">9:30 PM</option>
-                  <option value="22:00">10:00 PM</option>
-                  <option value="22:30">10:30 PM</option>
-                </select>
-              </div>
-              <div className="form-group">
-                <label className="form-label">Guests *</label>
-                <select
-                  name="guests"
-                  value={form.guests}
-                  onChange={handleChange}
-                  required
-                  className="form-input"
-                >
-                  {[1,2,3,4,5,6,7,8,9,10].map(n => (
-                    <option key={n} value={n}>{n} {n === 1 ? 'Guest' : 'Guests'}</option>
-                  ))}
-                  <option value="10+">10+ Guests</option>
-                </select>
-              </div>
-            </div>
-
-            <div className="form-group">
-              <label className="form-label">Special Requests</label>
-              <textarea
-                name="message"
-                value={form.message}
-                onChange={handleChange}
-                className="form-input form-textarea"
-                placeholder="Any dietary requirements, celebrations, seating preferences..."
-                rows="3"
-              />
-            </div>
-
-            <button
-              type="submit"
-              className="btn-primary form-submit"
-              disabled={status === 'sending'}
-            >
-              {status === 'sending' ? 'Sending...' : 'Confirm Reservation'}
-            </button>
-
-            {status === 'error' && (
-              <p className="form-error">Something went wrong. Please try again or call us directly.</p>
-            )}
-          </form>
-        )}
-      </div>
-    </div>
-  )
-}
 
 // ============================================
 // MAIN APP
 // ============================================
 
+const VENUE = getVenue('morjim')
+
+const NAV_ANCHORS = [
+  { id: 'about', label: 'Our Story' },
+  { id: 'gallery', label: 'Gallery' },
+  { id: 'menu', label: 'Menu' },
+  { id: 'contact', label: 'Contact' },
+]
+
 function App() {
-  const [scrolled, setScrolled] = useState(false)
-  const [menuOpen, setMenuOpen] = useState(false)
   const [activeCategory, setActiveCategory] = useState('starters')
   const [lightbox, setLightbox] = useState(null)
   const [reserveOpen, setReserveOpen] = useState(false)
 
-  useEffect(() => {
-    const handleScroll = () => {
-      setScrolled(window.scrollY > 80)
-    }
-    window.addEventListener('scroll', handleScroll)
-    return () => window.removeEventListener('scroll', handleScroll)
-  }, [])
+  useDocumentMeta(
+    'Jaadugari — Indian Resto & Bar | Morjim, Goa',
+    'Jaadugari — Where Indian culinary magic meets Goan soul. Premium Indian dining & handcrafted cocktails in the heart of Morjim, North Goa.'
+  )
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -472,7 +53,6 @@ function App() {
   }, [reserveOpen, lightbox])
 
   const scrollToSection = (id) => {
-    setMenuOpen(false)
     document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' })
   }
 
@@ -494,7 +74,12 @@ function App() {
   return (
     <>
       {/* ========== RESERVATION MODAL ========== */}
-      <ReservationModal isOpen={reserveOpen} onClose={() => setReserveOpen(false)} />
+      <ReservationModal
+        isOpen={reserveOpen}
+        onClose={() => setReserveOpen(false)}
+        venue={VENUE.key}
+        venueName={VENUE.name}
+      />
 
       {/* ========== LIGHTBOX ========== */}
       {lightbox !== null && (
@@ -510,34 +95,11 @@ function App() {
       )}
 
       {/* ========== NAVIGATION ========== */}
-      <nav className={`navbar ${scrolled ? 'scrolled' : ''}`}>
-        <div className="nav-logo">
-          <span className="nav-logo-text">Jaadugari</span>
-          <span className="nav-logo-tagline">Indian Resto & Bar</span>
-        </div>
-
-        <button
-          className={`mobile-menu-btn ${menuOpen ? 'active' : ''}`}
-          onClick={() => setMenuOpen(!menuOpen)}
-          aria-label="Toggle menu"
-        >
-          <span></span>
-          <span></span>
-          <span></span>
-        </button>
-
-        <ul className={`nav-links ${menuOpen ? 'open' : ''}`}>
-          <li><a href="#about" onClick={() => scrollToSection('about')}>Our Story</a></li>
-          <li><a href="#gallery" onClick={() => scrollToSection('gallery')}>Gallery</a></li>
-          <li><a href="#menu" onClick={() => scrollToSection('menu')}>Menu</a></li>
-          <li><a href="#contact" onClick={() => scrollToSection('contact')}>Contact</a></li>
-          <li>
-            <button className="nav-reserve-btn" onClick={() => { setMenuOpen(false); setReserveOpen(true) }}>
-              Reserve a Table
-            </button>
-          </li>
-        </ul>
-      </nav>
+      <SiteNav
+        venue={VENUE}
+        anchors={NAV_ANCHORS}
+        onReserve={() => setReserveOpen(true)}
+      />
 
       {/* ========== HERO ========== */}
       <section className="hero">
@@ -909,9 +471,6 @@ function App() {
                 Lamrin Morjim, 664/A<br />
                 Munugwada, Malekarwada<br />
                 Morjim, Goa 403512
-                <br /><br />
-                Lamrin Norwood Green<br />
-                Palampur
               </p>
             </div>
 
@@ -948,36 +507,7 @@ function App() {
       </section>
 
       {/* ========== FOOTER ========== */}
-      <footer className="footer">
-        <div className="container">
-          <div className="footer-content">
-            <h2 className="footer-logo">Jaadugari</h2>
-            <p className="footer-tagline">
-              Indian Resto & Bar — Lamrin, Morjim, Goa
-              <br />
-              Lamrin Norwood Green, Palampur
-            </p>
-
-            <div className="footer-social">
-              <a href="https://www.instagram.com" target="_blank" rel="noopener noreferrer" className="footer-social-link" aria-label="Instagram">IG</a>
-              <a href="https://www.facebook.com" target="_blank" rel="noopener noreferrer" className="footer-social-link" aria-label="Facebook">FB</a>
-              <a href="https://www.zomato.com" target="_blank" rel="noopener noreferrer" className="footer-social-link" aria-label="Zomato">Z</a>
-              <a href="https://wa.me/919876543210" target="_blank" rel="noopener noreferrer" className="footer-social-link" aria-label="WhatsApp">WA</a>
-            </div>
-
-            <div className="footer-bottom">
-              <p className="footer-copyright">
-                &copy; {new Date().getFullYear()} Jaadugari Indian Resto & Bar. All rights reserved.
-              </p>
-              <div className="footer-links">
-                <a href="#about" className="footer-link" onClick={(e) => { e.preventDefault(); scrollToSection('about') }}>About</a>
-                <a href="#menu" className="footer-link" onClick={(e) => { e.preventDefault(); scrollToSection('menu') }}>Menu</a>
-                <a href="#contact" className="footer-link" onClick={(e) => { e.preventDefault(); scrollToSection('contact') }}>Contact</a>
-              </div>
-            </div>
-          </div>
-        </div>
-      </footer>
+      <SiteFooter venue={VENUE} links={NAV_ANCHORS} />
     </>
   )
 }

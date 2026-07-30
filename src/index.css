@@ -1657,6 +1657,21 @@ img {
   }
 }
 
+/* ============================================
+   COMING SOON PLACEHOLDER
+   ============================================ */
+
+.coming-soon {
+  font-family: var(--font-heading);
+  font-size: 17px;
+  font-style: italic;
+  color: var(--color-warm-gray);
+  text-align: center;
+  padding: 40px 24px;
+  border: 1px dashed rgba(201, 168, 76, 0.2);
+  background: rgba(201, 168, 76, 0.02);
+}
+
 @media (max-width: 480px) {
   .nav-logo-text {
     font-size: 22px;
